@@ -1,14 +1,8 @@
-<script setup lang="ts">
-import Demo from './demo.vue'
-const obj = {
-  aaa: 'aaa'
-}
-</script>
-
+<script setup lang="ts"></script>
 <template>
-  <div class="home">
-    <h2>home</h2>
-  </div>
+  <router-link to="/login">login</router-link>
+  <router-link to="/main">main</router-link>
+  <router-view />
 </template>
 
 <style lang="less" scoped></style>
