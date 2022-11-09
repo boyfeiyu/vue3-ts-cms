@@ -6,6 +6,7 @@ const counterStore = useCounterStore()
 <template>
   <div class="login">
     <h2>{{ counterStore.counter }}</h2>
+    <el-button type="primary">Primary</el-button>
   </div>
 </template>
 
