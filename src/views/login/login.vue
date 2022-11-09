@@ -1,8 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import useCounterStore from '@/store/counter'
+const counterStore = useCounterStore()
+</script>
 
 <template>
   <div class="login">
-    <h2>login</h2>
+    <h2>{{ counterStore.counter }}</h2>
   </div>
 </template>
 
