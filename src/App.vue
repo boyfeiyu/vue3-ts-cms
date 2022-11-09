@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Demo from "./demo.vue";
+import Demo from './demo.vue'
 </script>
 
 <template>
