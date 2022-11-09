@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import Demo from './demo.vue'
+const obj = {
+  aaa: 'aaa'
+}
 </script>
 
 <template>
@@ -8,6 +11,4 @@ import Demo from './demo.vue'
   </div>
 </template>
 
-<style lang="less" scoped>
-
-</style>
+<style lang="less" scoped></style>

@@ -11,6 +11,8 @@
     "prettier": "prettier --write ."
   },
   "dependencies": {
+    "less": "^4.1.3",
+    "normalize.css": "^8.0.1",
     "vue": "^3.2.38"
   },
   "devDependencies": {
