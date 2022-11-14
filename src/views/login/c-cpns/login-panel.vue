@@ -3,6 +3,7 @@ import { localCache } from '@/utils/cache'
 import { ref, watch } from 'vue'
 import PaneAccount from './pane-account.vue'
 import PanePhone from './pane-phone.vue'
+
 // 记住密码
 const isKeepPwd = ref<boolean>(localCache.getCache('login/isKeepPwd') ?? false)
 watch(isKeepPwd, (isKeepPwdNew) => {

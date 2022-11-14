@@ -9,3 +9,13 @@ export function accountLoginRequest(account: IAccount) {
     }
   })
 }
+export function getUserInfoById(id: number) {
+  return fyRequest.get({
+    url: `/users/${id}`
+  })
+}
+export function getUserMenusByRoleId(id: number) {
+  return fyRequest.get({
+    url: `/role/${id}/menu`
+  })
+}
