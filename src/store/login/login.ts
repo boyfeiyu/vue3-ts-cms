@@ -9,12 +9,14 @@ import type { ILoginAccountRes, ILoginState } from '@/types/login'
 import { localCache } from '@/utils/cache'
 import router from '@/router/index'
 import { LOGIN_TOKEN } from '@/global/constants'
+import type { RouteRecordRaw } from 'vue-router'
+import { getRoutes } from '@/utils/map-usermenus-routes'
 
 const useLoginStore = defineStore('login', {
   state: (): ILoginState => ({
-    token: localCache.getCache(LOGIN_TOKEN) ?? '',
-    userInfo: localCache.getCache('userInfo') ?? undefined,
-    userMenus: localCache.getCache('userMenus') ?? []
+    token: '',
+    userInfo: undefined,
+    userMenus: []
   }),
   actions: {
     loginAccountAction: async function (account: IAccount) {
@@ -32,8 +34,30 @@ const useLoginStore = defineStore('login', {
       // 设置本地存储
       localCache.setCache('userInfo', this.userInfo)
       localCache.setCache('userMenus', this.userMenus)
+      // 注册路由
+      const routes: RouteRecordRaw[] = getRoutes(this.userMenus)
+      routes.forEach((route) => {
+        router.addRoute('main', route)
+      })
       // 页面跳转
       router.push('/main')
+    },
+    setStateFromLocalCache() {
+      // 从本地中读取数据
+      const token = localCache.getCache(LOGIN_TOKEN)
+      const userInfo = localCache.getCache('userInfo')
+      const userMenus = localCache.getCache('userMenus')
+      if (token && userInfo && userMenus) {
+        this.token = token
+        this.userInfo = userInfo
+        this.userMenus = userMenus
+
+        // 注册路由
+        const routes: RouteRecordRaw[] = getRoutes(this.userMenus)
+        routes.forEach((route) => {
+          router.addRoute('main', route)
+        })
+      }
     }
   }
 })

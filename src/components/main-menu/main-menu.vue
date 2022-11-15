@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import router from '@/router'
 import useLoginStore from '@/store/login/login'
+import { mapPathToMenu } from '@/utils/map-usermenus-routes'
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 
 const loginStore = useLoginStore()
 const userMenus = loginStore.userMenus
@@ -9,6 +13,16 @@ defineProps({
     default: false
   }
 })
+// 菜单默认选中
+const route = useRoute()
+const nowMenu = mapPathToMenu(route.path, userMenus)
+const defaultActive = ref(nowMenu.id + '')
+
+// 处理菜单项点击
+const handelMenuItemClick = (cItem: any) => {
+  // console.log(cItem)
+  router.push(cItem.url)
+}
 </script>
 
 <template>
@@ -21,7 +35,7 @@ defineProps({
     </div>
     <div class="menu">
       <el-menu
-        default-active="39"
+        :default-active="defaultActive"
         background-color="#001529"
         text-color="#b7bdc3"
         active-text-color="#ffffff"
@@ -38,7 +52,10 @@ defineProps({
               <span>{{ item.name }}</span>
             </template>
             <template v-for="cItem in item.children" :key="cItem.id">
-              <el-menu-item :index="String(cItem.id)">
+              <el-menu-item
+                :index="String(cItem.id)"
+                @click="handelMenuItemClick(cItem)"
+              >
                 {{ cItem.name }}
               </el-menu-item>
             </template>
