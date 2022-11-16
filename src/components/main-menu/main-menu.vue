@@ -2,7 +2,7 @@
 import router from '@/router'
 import useLoginStore from '@/store/login/login'
 import { mapPathToMenu } from '@/utils/map-usermenus-routes'
-import { ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 const loginStore = useLoginStore()
@@ -15,12 +15,12 @@ defineProps({
 })
 // 菜单默认选中
 const route = useRoute()
-const nowMenu = mapPathToMenu(route.path, userMenus)
-const defaultActive = ref(nowMenu.id + '')
+const defaultActive = computed(() => {
+  return mapPathToMenu(route.path, userMenus).id + ''
+})
 
 // 处理菜单项点击
 const handelMenuItemClick = (cItem: any) => {
-  // console.log(cItem)
   router.push(cItem.url)
 }
 </script>
