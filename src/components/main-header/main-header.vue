@@ -18,6 +18,11 @@ const route = useRoute()
 const breadcrumbs = computed(() =>
   mapPathToBreadcrumbs(route.path, loginStore.userMenus)
 )
+
+// 个人信息
+const name = computed(() => {
+  return loginStore.userInfo?.name
+})
 </script>
 
 <template>
@@ -42,7 +47,9 @@ const breadcrumbs = computed(() =>
           </template>
         </el-breadcrumb>
       </div>
-      <div class="user-info">个人信息</div>
+      <div class="user-info">
+        <div class="name">{{ name }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -54,6 +61,7 @@ const breadcrumbs = computed(() =>
   align-items: center;
 }
 .menu-icon {
+  margin-right: 20px;
   font-size: 28px;
   line-height: 28px;
 }
