@@ -1,47 +1,54 @@
 <script setup lang="ts">
-import { postUserList } from '@/service/main/system/system'
 import useSystemStore from '@/store/main/system/system'
+import type { IUserSearchForm } from '@/types/system'
 import { Search, Refresh } from '@element-plus/icons-vue'
-import { storeToRefs } from 'pinia'
+import { onMounted, reactive } from 'vue'
 
 const systemStore = useSystemStore()
 
-const { userSearch } = storeToRefs(systemStore)
-
+const userSearchForm = reactive<IUserSearchForm>({
+  name: '',
+  realname: '',
+  cellphone: '',
+  enable: undefined,
+  createAt: []
+})
 // 重置表单
 const handelResetClick = () => {
-  userSearch.value.name = ''
-  userSearch.value.realname = ''
-  userSearch.value.cellphone = ''
-  userSearch.value.enable = undefined
-  userSearch.value.createdAt = []
+  userSearchForm.name = ''
+  userSearchForm.realname = ''
+  userSearchForm.cellphone = ''
+  userSearchForm.enable = undefined
+  userSearchForm.createAt = []
 }
 
 // 查询
-const handelSearchClick = async () => {
-  const userListRes = await postUserList(userSearch.value)
-  const userList = userListRes.data.list
-  console.log(userList)
+const handelSearchClick = () => {
+  systemStore.postUserListAction(userSearchForm)
 }
+
+onMounted(() => {
+  systemStore.postUserListAction(userSearchForm)
+})
 </script>
 
 <template>
   <div class="search">
-    <el-form :model="userSearch" label-width="80px">
+    <el-form :model="userSearchForm" label-width="80px">
       <el-row :gutter="20">
         <el-col :span="8">
           <el-form-item label="用户名">
-            <el-input v-model="userSearch.name" size="large" />
+            <el-input v-model="userSearchForm.name" size="large" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="真实姓名">
-            <el-input v-model="userSearch.realname" size="large" />
+            <el-input v-model="userSearchForm.realname" size="large" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="手机号码">
-            <el-input v-model="userSearch.cellphone" size="large" />
+            <el-input v-model="userSearchForm.cellphone" size="large" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -50,7 +57,7 @@ const handelSearchClick = async () => {
               size="large"
               placeholder="请选择状态"
               style="width: 100%"
-              v-model="userSearch.enable"
+              v-model="userSearchForm.enable"
             >
               <el-option label="启用" :value="1" />
               <el-option label="禁用" :value="0" />
@@ -65,7 +72,7 @@ const handelSearchClick = async () => {
               start-placeholder="开始日期"
               end-placeholder="结束日期"
               size="large"
-              v-model="userSearch.createdAt"
+              v-model="userSearchForm.createAt"
             />
           </el-form-item>
         </el-col>

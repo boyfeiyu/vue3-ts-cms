@@ -3,8 +3,21 @@ export interface IUserSearchForm {
   realname: string
   cellphone: string
   enable: 0 | 1 | undefined
-  createdAt: any
+  createAt: any
+}
+
+export interface IUser {
+  id: number
+  name: string
+  realname: string
+  cellphone: number
+  enable: number
+  departmentId: number
+  roleId: number
+  createAt: string
+  updateAt: string
 }
 export interface ISystemState {
-  userSearch: IUserSearchForm
+  userList: IUser[]
+  totalCount: number
 }
