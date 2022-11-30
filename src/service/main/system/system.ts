@@ -1,13 +1,15 @@
 import fyRequest from '@/service/index'
-import type { IUserSearchForm } from '@/types/system'
 
-export function postUserList(userSearch: IUserSearchForm) {
+export function postUserList(queryInfo: any = {}) {
   return fyRequest.post({
     url: '/users/list',
     data: {
-      name: userSearch.name,
-      realname: userSearch.realname,
-      cellphone: userSearch.cellphone
+      ...queryInfo
     }
+  })
+}
+export function deleteUserById(id: number) {
+  return fyRequest.delete({
+    url: `/users/${id}`
   })
 }

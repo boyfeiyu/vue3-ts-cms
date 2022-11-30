@@ -73,4 +73,10 @@ export default class FYRequest {
       ...config
     })
   }
+  delete<T = any>(config: FYRequestConfig<T>) {
+    return this.request({
+      method: 'DELETE',
+      ...config
+    })
+  }
 }

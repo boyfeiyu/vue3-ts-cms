@@ -1,35 +1,34 @@
 <script setup lang="ts">
-import useSystemStore from '@/store/main/system/system'
 import type { IUserSearchForm } from '@/types/system'
 import { Search, Refresh } from '@element-plus/icons-vue'
-import { onMounted, reactive } from 'vue'
+import { reactive } from 'vue'
 
-const systemStore = useSystemStore()
+// 定义自定义事件
+const emit = defineEmits(['queryClick', 'resetClick'])
 
 const userSearchForm = reactive<IUserSearchForm>({
   name: '',
   realname: '',
   cellphone: '',
   enable: undefined,
-  createAt: []
+  createAt: ''
 })
 // 重置表单
 const handelResetClick = () => {
+  // 重制表单
   userSearchForm.name = ''
   userSearchForm.realname = ''
   userSearchForm.cellphone = ''
   userSearchForm.enable = undefined
-  userSearchForm.createAt = []
+  userSearchForm.createAt = ''
+  // 触发自定义事件
+  emit('resetClick')
 }
 
 // 查询
-const handelSearchClick = () => {
-  systemStore.postUserListAction(userSearchForm)
+const handelQueryClick = () => {
+  emit('queryClick', userSearchForm)
 }
-
-onMounted(() => {
-  systemStore.postUserListAction(userSearchForm)
-})
 </script>
 
 <template>
@@ -86,7 +85,7 @@ onMounted(() => {
         type="primary"
         size="large"
         :icon="Search"
-        @click="handelSearchClick"
+        @click="handelQueryClick"
       >
         查询
       </el-button>
