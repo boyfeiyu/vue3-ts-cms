@@ -79,4 +79,10 @@ export default class FYRequest {
       ...config
     })
   }
+  patch<T = any>(config: FYRequestConfig<T>) {
+    return this.request({
+      method: 'PATCH',
+      ...config
+    })
+  }
 }

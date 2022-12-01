@@ -13,3 +13,15 @@ export function deleteUserById(id: number) {
     url: `/users/${id}`
   })
 }
+export function postNewUser(userData: any) {
+  return fyRequest.post({
+    url: `/users`,
+    data: userData
+  })
+}
+export function editUserById(id: any, userData: any) {
+  return fyRequest.patch({
+    url: `/users/${id}`,
+    data: userData
+  })
+}

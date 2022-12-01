@@ -21,6 +21,11 @@ const modalRef = ref<InstanceType<typeof UserModal>>()
 function handleNewUserClick() {
   modalRef.value?.setModalVisable()
 }
+
+// 编辑
+function handleEditUserClick(itemData: any) {
+  modalRef.value?.setModalVisable(false, itemData)
+}
 </script>
 
 <template>
@@ -29,7 +34,11 @@ function handleNewUserClick() {
       @query-click="handleQueryClick"
       @reset-click="handleResetClick"
     />
-    <user-content ref="contentRef" @new-user-click="handleNewUserClick" />
+    <user-content
+      ref="contentRef"
+      @new-user-click="handleNewUserClick"
+      @edit-user-click="handleEditUserClick"
+    />
     <user-modal ref="modalRef" />
   </div>
 </template>

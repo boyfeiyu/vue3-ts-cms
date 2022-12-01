@@ -11,6 +11,7 @@ import router from '@/router/index'
 import { LOGIN_TOKEN } from '@/global/constants'
 import type { RouteRecordRaw } from 'vue-router'
 import { getRoutes } from '@/utils/map-usermenus-routes'
+import useMainStore from '../main/main'
 
 const useLoginStore = defineStore('login', {
   state: (): ILoginState => ({
@@ -52,6 +53,9 @@ const useLoginStore = defineStore('login', {
         this.userInfo = userInfo
         this.userMenus = userMenus
 
+        // 请求角色、部门数据
+        const mainStore = useMainStore()
+        mainStore.fetchEntireDataAction()
         // 注册路由
         const routes: RouteRecordRaw[] = getRoutes(this.userMenus)
         routes.forEach((route) => {

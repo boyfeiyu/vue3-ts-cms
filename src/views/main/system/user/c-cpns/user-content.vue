@@ -42,12 +42,17 @@ function fetchUserListData(formData: any = {}) {
   systemStore.postUserListAction(queryInfo)
 }
 
+const emit = defineEmits(['newUserClick', 'editUserClick'])
 // 新增用户
-const emit = defineEmits(['newUserClick'])
 function handelNewUserClick() {
   emit('newUserClick')
 }
 defineExpose({ fetchUserListData })
+
+// 编辑用户
+function handelEditUserClick(itemData: any) {
+  emit('editUserClick', itemData)
+}
 </script>
 
 <template>
@@ -91,7 +96,14 @@ defineExpose({ fetchUserListData })
         />
         <el-table-column align="center" width="180" label="操作">
           <template #default="scope">
-            <el-button text type="primary" :icon="Edit">编辑</el-button>
+            <el-button
+              text
+              type="primary"
+              :icon="Edit"
+              @click="handelEditUserClick(scope.row)"
+            >
+              编辑
+            </el-button>
             <el-button
               text
               type="danger"

@@ -1,4 +1,9 @@
-import { deleteUserById, postUserList } from '@/service/main/system/system'
+import {
+  deleteUserById,
+  editUserById,
+  postNewUser,
+  postUserList
+} from '@/service/main/system/system'
 import type { ISystemState } from '@/types/system'
 import { defineStore } from 'pinia'
 
@@ -15,6 +20,18 @@ const useSystemStore = defineStore('system', {
     },
     deleteUserByIdAction(id: number) {
       deleteUserById(id).then(() => {
+        // 重新请求新的数据
+        this.postUserListAction({ offset: 0, size: 10 })
+      })
+    },
+    postNewUserAction(userData: any) {
+      postNewUser(userData).then(() => {
+        // 重新请求新的数据
+        this.postUserListAction({ offset: 0, size: 10 })
+      })
+    },
+    editUserByIdAction(id: any, userData: any) {
+      editUserById(id, userData).then(() => {
         // 重新请求新的数据
         this.postUserListAction({ offset: 0, size: 10 })
       })
