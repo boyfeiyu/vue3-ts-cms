@@ -5,31 +5,31 @@ import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { formatUTC } from '@/utils/format'
 const systemStore = useSystemStore()
-const { userList, totalCount } = storeToRefs(systemStore)
+const { pageList, pageTotalCount } = storeToRefs(systemStore)
 
 onMounted(() => {
-  fetchUserListData()
+  fetchPageListData()
 })
 // 分页相关
 const currentPage = ref(1)
 const pageSize = ref(10)
 function handleSizeChange() {
-  // console.log('handleSizeChange', pageSize.value)
-  fetchUserListData()
+  fetchPageListData()
 }
 function handleCurrentChange() {
-  // console.log('handleCurrentChange', currentPage.value)
-  fetchUserListData()
+  fetchPageListData()
 }
 
-// 删除用户
+// 删除页面数据
 const handleDeleteBtnClick = (id: any) => {
-  // console.log(id)
-  systemStore.deleteUserByIdAction(id)
+  systemStore.deletePageByIdAction('department', id)
 }
 
-// 获取用户列表
-function fetchUserListData(formData: any = {}) {
+// 获取页面数据列表
+function fetchPageListData(
+  pageName: string = 'department',
+  formData: any = {}
+) {
   // 获取offset/size
   const size = pageSize.value
   const offset = (currentPage.value - 1) * size
@@ -39,49 +39,35 @@ function fetchUserListData(formData: any = {}) {
     ...pageInfo,
     ...formData
   }
-  systemStore.postUserListAction(queryInfo)
+  systemStore.postPageListAction(pageName, queryInfo)
 }
 
-const emit = defineEmits(['newUserClick', 'editUserClick'])
-// 新增用户
-function handelNewUserClick() {
-  emit('newUserClick')
+const emit = defineEmits(['newPageClick', 'editPageClick'])
+// 新增页面数据
+function handelNewPageClick() {
+  emit('newPageClick')
 }
-defineExpose({ fetchUserListData })
+defineExpose({ fetchPageListData })
 
 // 编辑用户
-function handelEditUserClick(itemData: any) {
-  emit('editUserClick', itemData)
+function handelEditPageClick(itemData: any) {
+  emit('editPageClick', itemData)
 }
 </script>
 
 <template>
-  <div class="user-content">
+  <div class="page-content">
     <div class="header">
       <h3>用户列表</h3>
-      <el-button type="primary" @click="handelNewUserClick">新增数据</el-button>
+      <el-button type="primary" @click="handelNewPageClick">新增数据</el-button>
     </div>
     <div class="table">
-      <el-table :data="userList" border style="width: 100%">
+      <el-table :data="pageList" border style="width: 100%">
         <el-table-column type="selection" width="60" align="center" />
         <el-table-column align="center" type="index" label="序号" width="60" />
-        <el-table-column align="center" prop="name" label="用户名" />
-        <el-table-column align="center" prop="realname" label="真实名" />
-        <el-table-column
-          align="center"
-          prop="cellphone"
-          label="手机号码"
-          width="160"
-        />
-
-        <el-table-column align="center" width="100" prop="enable" label="状态">
-          <template #default="scope">
-            <el-button text :type="scope.row.enable ? 'success' : 'danger'">
-              {{ scope.row.enable ? '启用' : '禁用' }}
-            </el-button>
-          </template>
-        </el-table-column>
-
+        <el-table-column align="center" prop="name" label="部门名称" />
+        <el-table-column align="center" prop="leader" label="部门领导" />
+        <el-table-column align="center" prop="parentId" label="上级部门" />
         <el-table-column
           align="center"
           prop="createAt"
@@ -92,6 +78,7 @@ function handelEditUserClick(itemData: any) {
             {{ formatUTC(scope.row.createAt) }}
           </template>
         </el-table-column>
+
         <el-table-column
           align="center"
           prop="updateAt"
@@ -109,7 +96,7 @@ function handelEditUserClick(itemData: any) {
               text
               type="primary"
               :icon="Edit"
-              @click="handelEditUserClick(scope.row)"
+              @click="handelEditPageClick(scope.row)"
             >
               编辑
             </el-button>
@@ -133,7 +120,7 @@ function handelEditUserClick(itemData: any) {
         small="small"
         background="#fff"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="totalCount"
+        :total="pageTotalCount"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       />
@@ -142,7 +129,7 @@ function handelEditUserClick(itemData: any) {
 </template>
 
 <style lang="less" scoped>
-.user-content {
+.page-content {
   margin-top: 20px;
   padding: 20px;
   background-color: #fff;

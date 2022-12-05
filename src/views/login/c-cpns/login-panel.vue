@@ -31,6 +31,8 @@ function handleLoginBtnClick() {
 <template>
   <div class="login-panel">
     <h1 class="title">后台管理系统</h1>
+    <p>示例用户：coderwhy, 123456</p>
+
     <div class="tabs">
       <el-tabs type="border-card" v-model="activeName" stretch>
         <el-tab-pane name="account">
